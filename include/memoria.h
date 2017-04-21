@@ -28,3 +28,5 @@ struct s_Cache{
 typedef struct s_Cache* Cache;
 
 Cache nova_Cache(int qtd_total_palavras, int qtd_palavras_por_bloco);
+
+int cache_busca(Cache cache, int *endereco);
