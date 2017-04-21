@@ -1,8 +1,12 @@
 # Object files
+obj/
 *.o
 *.ko
 *.obj
 *.elf
+
+# Dependency files
+*.d
 
 # Precompiled Headers
 *.gch
@@ -27,6 +31,7 @@
 *.i*86
 *.x86_64
 *.hex
+tp1
 
 # Debug files
 *.dSYM/
