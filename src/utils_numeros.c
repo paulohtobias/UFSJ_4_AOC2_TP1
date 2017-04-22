@@ -32,12 +32,12 @@ int btoi(int *bin, Intervalo tamanho){
 	return num;
 }
 
-int *itob(int num){
-	int *bin = vetor1d(TAM_PALAVRA);
+int *itob(int num, int tam){
+	int *bin = vetor1d(tam);
 	int i;
 
-	for(i=TAM_PALAVRA-1; i>=0; i--){
-		bin[i] = (num>>(TAM_PALAVRA-i-1) & 1);
+	for(i=tam-1; i>=0; i--){
+		bin[i] = (num>>(tam-i-1) & 1);
 	}
 	return bin;
 }

@@ -4,9 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TAM_PALAVRA 32
-#define TAM_ENDERECO 10
-
 //Funções auxiliares de matriz e vetor.
 int *vetor1d(int d1);
 int **vetor2d(int d1, int d2);
@@ -23,7 +20,7 @@ Intervalo novo_Intervalo(int inicio, int fim);
 int btoi(int bin[], Intervalo tamanho);
 
 //Converte inteiro para binário.
-int *itob(int num);
+int *itob(int num, int tam);
 
 //Retorna quantos bits são precisos para representar os números de 0 a [num - 1]
 int num_bits(int num);

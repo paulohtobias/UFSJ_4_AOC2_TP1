@@ -3,6 +3,9 @@
 
 #include "utils_numeros.h"
 
+#define TAM_PALAVRA 32
+#define TAM_ENDERECO 10
+
 struct s_Cache{
 	//Palavras
 	int tamanho_bloco;
@@ -29,8 +32,22 @@ typedef enum{
 	HIT
 }Busca_Resultado;
 
+//Cria uma nova memória Cache.
 Cache nova_Cache(int qtd_total_palavras, int tamanho_bloco);
 
-int cache_busca(Cache cache, int *endereco);
+//Verifica [endereço] na [cache]. Retorna HIT ou MISS.
+int cache_buscaB(Cache cache, int *endereco);
+int cache_buscaD(Cache cache, int endereco);
+
+//Retorna os dados da [cache] correspondentes a [endereco].
+int cache_lerB(Cache cache, int *endereco);
+int cache_lerD(Cache cache, int endereco);
+
+//Insere o bloco de [endereco] da [memoria_principal] na [cache].
+void cache_insereB(Cache cache, int *memoria_principal, int *endereco);
+void cache_insereD(Cache cache, int *memoria_principal, int endereco);
+
+//Printa na tela o [bloco] da [cache].
+void cache_printa_bloco(Cache cache, int bloco);
 
 #endif //MEMORIA_H

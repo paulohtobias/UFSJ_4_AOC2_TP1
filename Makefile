@@ -27,15 +27,14 @@ OBJS = $(INCS:$(IDIR)/%.h=$(ODIR)/%.o)
 DEPS = $(INCS:$(IDIR)/%.h=$(ODIR)/%.d)
 
 all: $(OBJS)
-	$(COMPILE) $(OBJS) main.c -o $(BIN) -lpthread
+	$(COMPILE) $(OBJS) main.c -o $(BIN)
 
 # Include all .d files
 -include $(DEPS)
 
 $(ODIR)/%.o: $(SDIR)/%.c $(IDIR)/%.h
-	$(COMPILE) -MMD -c $< -o $@ -lpthread
+	$(COMPILE) -MMD -c $< -o $@
 
 .PHONY : clean
 clean :
 	-rm $(BIN) $(BIN).d $(OBJS) $(DEPS)
-
