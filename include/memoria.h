@@ -1,32 +1,36 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef MEMORIA_H
+#define MEMORIA_H
 
-//Funções auxiliares de matriz e vetor.
-int *vetor1d(int d1);
-int **vetor2d(int d1, int d2);
-int ***vetor3d(int d1, int d2, int d3);
-
-#define TAM_PALAVRA 32
+#include "utils_numeros.h"
 
 struct s_Cache{
-	int qtd_palavras_por_bloco;
-	int bits_palavras;
-	int **endereco_palavra;
+	//Palavras
+	int tamanho_bloco;
+	Intervalo bits_palavras; //Intervalo de bits que serão necessários para endereçar as palavras
 
+	//Blocos
 	int qtd_blocos;
-	int bits_blocos;
-	int **endereco_bloco;
+	Intervalo bits_blocos; //Intervalo de bits que serão necessários para endereçar os blocos
 
-	int **tag;
-	int bits_tags;
-	int a;
+	//Tags
+	int *tag;
+	Intervalo bits_tags;
 
+	//Bit Validade
 	int *bit_validade;
 
-	int ***memoria;
+	//Matriz de dados
+	int **data;
 };
 typedef struct s_Cache* Cache;
 
-Cache nova_Cache(int qtd_total_palavras, int qtd_palavras_por_bloco);
+typedef enum{
+	MISS,
+	HIT
+}Busca_Resultado;
+
+Cache nova_Cache(int qtd_total_palavras, int tamanho_bloco);
 
 int cache_busca(Cache cache, int *endereco);
+
+#endif //MEMORIA_H
