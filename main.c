@@ -21,7 +21,7 @@ int main(){
 		cache_printa_bloco(cache, i);
 	}
 
-	for(i=0; i<15; i++)
+	for(i=0; i<45; i++)
 		printf("BUSCA(%d): %d\n", i, cache_buscaD(cache, i));
 
 	return 0;

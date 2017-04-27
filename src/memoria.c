@@ -1,5 +1,8 @@
 #include "memoria.h"
 
+int hits = 0;
+int misses = 0;
+
 Cache nova_Cache(int qtd_total_palavras, int tamanho_bloco){
 	Cache cache = malloc(sizeof(struct s_Cache));
 
@@ -25,6 +28,28 @@ Cache nova_Cache(int qtd_total_palavras, int tamanho_bloco){
 	return cache;
 }
 
+void cache_printa_bloco(Cache cache, int bloco){
+	int i;
+
+	printf("Bloco %d (", bloco);
+	mostra( itob(bloco, cache->bits_blocos.qtd), novo_Intervalo(0, cache->bits_blocos.qtd-1) );
+	printf(") | ");
+
+	printf("Tag: %d (", cache->tag[bloco]);
+	mostra( itob(cache->tag[bloco], cache->bits_tags.qtd), novo_Intervalo(0, cache->bits_tags.qtd-1) );
+	printf(") | ");
+
+	printf("Validade: '%c'\n", cache->bit_validade[bloco]?'Y':'N');
+
+	for(i=0; i<cache->tamanho_bloco; i++){
+		printf("\t");
+		int *ib = itob(i, cache->bits_palavras.qtd);
+		mostra( ib, novo_Intervalo(0, cache->bits_palavras.qtd-1) );
+		printf("|%d: <%d>\n", i, cache->data[bloco][i]);
+	}
+	printf("\n");
+}
+
 int cache_buscaB(Cache cache, int *endereco){
 	//Fazendo o mapeamento do endereço fornecido.
 	int endereco_bloco = btoi(endereco, cache->bits_blocos);
@@ -44,7 +69,7 @@ int cache_buscaB(Cache cache, int *endereco){
 	return HIT;
 }
 int cache_buscaD(Cache cache, int endereco){
-	cache_buscaB(cache, itob(endereco, TAM_ENDERECO));
+	return cache_buscaB(cache, itob(endereco, TAM_ENDERECO));
 }
 
 int cache_lerB(Cache cache, int *endereco){
@@ -55,7 +80,7 @@ int cache_lerB(Cache cache, int *endereco){
 	return cache->data[endereco_bloco][endereco_palavra];
 }
 int cache_lerD(Cache cache, int endereco){
-	cache_lerB(cache, itob(endereco, TAM_ENDERECO));
+	return cache_lerB(cache, itob(endereco, TAM_ENDERECO));
 }
 
 void cache_insereB(Cache cache, int *memoria_principal, int *endereco){
@@ -84,24 +109,28 @@ void cache_insereD(Cache cache, int *memoria_principal, int endereco){
 	cache_insereB(cache, memoria_principal, itob(endereco, TAM_ENDERECO));
 }
 
-void cache_printa_bloco(Cache cache, int bloco){
-	int i;
-
-	printf("Bloco %d (", bloco);
-	mostra( itob(bloco, cache->bits_blocos.qtd), novo_Intervalo(0, cache->bits_blocos.qtd-1) );
-	printf(") | ");
-
-	printf("Tag: %d (", cache->tag[bloco]);
-	mostra( itob(cache->tag[bloco], cache->bits_tags.qtd), novo_Intervalo(0, cache->bits_tags.qtd-1) );
-	printf(") | ");
-
-	printf("Validade: '%c'\n", cache->bit_validade[bloco]?'Y':'N');
-
-	for(i=0; i<cache->tamanho_bloco; i++){
-		printf("\t");
-		int *ib = itob(i, cache->bits_palavras.qtd);
-		mostra( ib, novo_Intervalo(0, cache->bits_palavras.qtd-1) );
-		printf("|%d: <%d>\n", i, cache->data[bloco][i]);
+void cache_escreveB(Cache cache, int *memoria_principal, int *endereco){
+	if(cache_buscaB(cache, endereco) == HIT){
+		//Aqui os dados seriam escritos tanto na cache quanto na memória principal.
+		hits++;
+	}else{
+		//Aqui o processo seria repetido.
+		//Mas antes seria necessário copiar os dados da memoria_principal para a cache.
+		misses++;
 	}
-	printf("\n");
+}
+
+//Faz a leitura na a memória cache.
+int *cache_leituraB(Cache cache, int *memoria_principal, int *endereco){
+	int *dado = NULL;
+	if(cache_buscaB(cache, endereco) == HIT){
+		dado = malloc(sizeof(int));
+		(*dado) = cache_lerB(cache, endereco);
+	}else{
+		cache_insereB(cache, memoria_principal, endereco);
+	}
+	return dado;
+}
+int *cache_leituraD(Cache cache, int *memoria_principal, int endereco){
+	return NULL;
 }

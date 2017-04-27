@@ -32,8 +32,16 @@ typedef enum{
 	HIT
 }Busca_Resultado;
 
+typedef enum{
+	ESCRITA,
+	LEITURA
+}Operacao;
+
 //Cria uma nova memória Cache.
 Cache nova_Cache(int qtd_total_palavras, int tamanho_bloco);
+
+//Printa na tela o [bloco] da [cache].
+void cache_printa_bloco(Cache cache, int bloco);
 
 //Verifica [endereço] na [cache]. Retorna HIT ou MISS.
 int cache_buscaB(Cache cache, int *endereco);
@@ -47,7 +55,12 @@ int cache_lerD(Cache cache, int endereco);
 void cache_insereB(Cache cache, int *memoria_principal, int *endereco);
 void cache_insereD(Cache cache, int *memoria_principal, int endereco);
 
-//Printa na tela o [bloco] da [cache].
-void cache_printa_bloco(Cache cache, int bloco);
+
+//Faz a leitura na memória cache.
+int *cache_leituraB(Cache cache, int *memoria_principal, int *endereco);
+int *cache_leituraD(Cache cache, int *memoria_principal, int endereco);
+
+//Escreve os dados na cache.
+void cache_escreveB(Cache cache, int *memoria_principal, int *endereco);
 
 #endif //MEMORIA_H
