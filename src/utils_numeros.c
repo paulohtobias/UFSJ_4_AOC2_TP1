@@ -23,38 +23,11 @@ Intervalo novo_Intervalo(int inicio, int fim){
 	return tamanho;
 }
 
-int btoi(int *bin, Intervalo tamanho){
-	int i, num = 0;
-
-	for(i=tamanho.fim; i>=tamanho.inicio; i--){
-		num+=(bin[i]<<(tamanho.fim-i));
-	}
-	return num;
-}
-
-int *itob(int num, int tam){
-	int *bin = vetor1d(tam);
+int calcula_bits(int num){
 	int i;
-
-	for(i=tam-1; i>=0; i--){
-		bin[i] = (num>>(tam-i-1) & 1);
+	int n = num;
+	for(i=0; n>1; i++){
+		n>>=1;
 	}
-	return bin;
-}
-
-int num_bits(int num){
-	int qtd, temp = num;
-
-	for(qtd=0; temp>1; qtd++){
-		temp>>=1;
-	}
-
-	return qtd;
-}
-
-void mostra(int *bin, Intervalo t){
-	int i;
-	for(i=t.inicio; i<=t.fim; i++){
-		printf("%d", bin[i]);
-	}
+	return i;
 }

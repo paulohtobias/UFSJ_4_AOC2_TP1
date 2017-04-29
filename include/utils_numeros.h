@@ -16,16 +16,8 @@ typedef struct{
 
 Intervalo novo_Intervalo(int inicio, int fim);
 
-//Converte binário para inteiro.
-int btoi(int bin[], Intervalo tamanho);
+int calcula_bits(int num);
 
-//Converte inteiro para binário.
-int *itob(int num, int tam);
-
-//Retorna quantos bits são precisos para representar os números de 0 a [num - 1]
-int num_bits(int num);
-
-//Mostra um numero binário na tela.
-void mostra(int *bin, Intervalo t);
+int sub_num(int num, int inicio);
 
 #endif //UTILS_NUMEROS_H

@@ -1,28 +1,64 @@
 #include "memoria.h"
 
-int expo2(int e){
-	return 1<<e;
-}
-
-int main(){
+int main(int argc, char *argv[]){
 	int i;
 
-	int pal = 32, bl = 4;
-	Cache cache = nova_Cache(pal, bl);
-
-	int mp[1024];
-	for(i=0; i<1024; i++){
+	int mp[TAM_MP];
+	for(i=0; i<TAM_MP; i++){
 		mp[i] = i;
 	}
 
-	cache_insereD(cache, mp, 37);
+	int palavras, tam_bloco;
+	Cache cache = NULL;
+	for(palavras = 32; palavras <= 256; palavras<<=1){
+		for(tam_bloco = 1; tam_bloco <= 8; tam_bloco<<=1){
+			FILE *in = fopen("trace.txt", "r");
 
-	for(i=0; i<cache->qtd_blocos; i++){
-		cache_printa_bloco(cache, i);
+			int blocos = palavras / tam_bloco;
+			
+			cache = nova_Cache(palavras, tam_bloco);
+
+			int endereco;
+			char modo[8], bin[11];
+			int leituraHit=0, leituraMiss=0;
+			int escritaHit=0, escritaMiss=0;
+			while(!feof(in)){
+				fscanf(in, "%s %s %d\n", modo, bin, &endereco);
+				if(!cache_busca(cache, endereco)){
+					cache_insere(mp, cache, endereco);
+					if(modo[0] == 'e')
+						escritaMiss++;
+					else
+						leituraMiss++;
+				}else{
+					if(modo[0] == 'e')
+						escritaHit++;
+					else
+						leituraHit++;
+				}
+			}
+
+			//cache_printa(cache);
+			char log_name[50];
+
+			sprintf(log_name, "log/log [%d x %d].txt", blocos, tam_bloco);
+			FILE *out = fopen(log_name, "w");
+
+			fprintf(out, "Cache: %d palavras divididas em %d blocos com %d palavras cada.\n\n", palavras, blocos, tam_bloco);
+			fprintf(out, "Hit: %d | Miss: %d\n", cache->hit, cache->miss);
+			fprintf(out, "Leituras (H|M|T): (%d|%d|%d)\n"
+						"Escritas (H|M|T): (%d|%d|%d)\n"
+						"Total: %d\n",
+						leituraHit, leituraMiss, leituraHit + leituraMiss,
+						escritaHit, escritaMiss, escritaHit + escritaMiss,
+						leituraHit + leituraMiss + escritaHit + escritaMiss);
+			
+			free_Cache(cache);
+			fclose(out);
+			fclose(in);
+			cache = NULL;
+		}
 	}
-
-	for(i=0; i<45; i++)
-		printf("BUSCA(%d): %d\n", i, cache_buscaD(cache, i));
 
 	return 0;
 }

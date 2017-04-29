@@ -1,0 +1,6 @@
+Cache: 64 palavras divididas em 16 blocos com 4 palavras cada.
+
+Hit: 875806 | Miss: 175838
+Leituras (H|M|T): (873858|175740|1049598)
+Escritas (H|M|T): (1948|98|2046)
+Total: 1051644

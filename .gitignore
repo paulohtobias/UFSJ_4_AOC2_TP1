@@ -36,6 +36,9 @@ tp1
 # Debug files
 *.dSYM/
 
+# Visual Studio Code project settings
+.vscode
+
 # =========================
 # Operating System Files
 # =========================
@@ -86,3 +89,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+GPATH
+GRTAGS
+GTAGS
